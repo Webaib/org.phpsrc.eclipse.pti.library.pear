@@ -47,7 +47,7 @@
  * @author    Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright 2009-2010 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @version   Release: 1.3.0
+ * @version   Release: 1.3.2
  * @link      http://github.com/sebastianbergmann/phpcpd/tree
  * @since     Class available since Release 1.1.0
  */

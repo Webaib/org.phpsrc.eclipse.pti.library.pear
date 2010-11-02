@@ -1503,7 +1503,7 @@ class PHP_CodeSniffer
         if ($temp === false) {
             $configFile = dirname(__FILE__).'/CodeSniffer.conf';
             if (is_file($configFile) === false) {
-                $configFile = '/srv/pti/pear/svn/data/PHP_CodeSniffer/CodeSniffer.conf';
+                $configFile = '/home/skiera/pti/pear/php/data/PHP_CodeSniffer/CodeSniffer.conf';
             }
 
             if (is_file($configFile) === true
@@ -1555,7 +1555,7 @@ class PHP_CodeSniffer
 
         $configFile = dirname(__FILE__).'/CodeSniffer.conf';
         if (is_file($configFile) === false) {
-            $configFile = '/srv/pti/pear/svn/data/PHP_CodeSniffer/CodeSniffer.conf';
+            $configFile = '/home/skiera/pti/pear/php/data/PHP_CodeSniffer/CodeSniffer.conf';
         }
 
         if (is_file($configFile) === false) {

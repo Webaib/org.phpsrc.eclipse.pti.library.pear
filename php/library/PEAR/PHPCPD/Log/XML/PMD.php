@@ -49,7 +49,7 @@ require_once 'PHPCPD/Log/XML.php';
  * @author    Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright 2009-2010 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @version   Release: 1.3.0
+ * @version   Release: 1.3.2
  * @link      http://github.com/sebastianbergmann/phpcpd/tree
  * @since     Class available since Release 1.0.0
  */
@@ -63,7 +63,7 @@ class PHPCPD_Log_XML_PMD extends PHPCPD_Log_XML
     public function processClones(PHPCPD_CloneMap $clones)
     {
         $cpd = $this->document->createElement('pmd-cpd');
-        $cpd->setAttribute('version', 'phpcpd 1.3.0');
+        $cpd->setAttribute('version', 'phpcpd 1.3.2');
         $this->document->appendChild($cpd);
 
         foreach ($clones as $clone) {

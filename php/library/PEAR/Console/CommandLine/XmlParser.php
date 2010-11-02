@@ -100,8 +100,8 @@ class Console_CommandLine_XmlParser
      */
     public static function validate($doc) 
     {
-        if (is_dir('/srv/pti/pear/svn/data' . DIRECTORY_SEPARATOR . 'Console_CommandLine')) {
-            $rngfile = '/srv/pti/pear/svn/data' . DIRECTORY_SEPARATOR
+        if (is_dir('/home/skiera/pti/pear/php/data' . DIRECTORY_SEPARATOR . 'Console_CommandLine')) {
+            $rngfile = '/home/skiera/pti/pear/php/data' . DIRECTORY_SEPARATOR
                 . 'Console_CommandLine' . DIRECTORY_SEPARATOR . 'data' 
                 . DIRECTORY_SEPARATOR . 'xmlschema.rng';
         } else {

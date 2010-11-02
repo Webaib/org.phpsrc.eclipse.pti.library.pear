@@ -2,7 +2,7 @@
 /**
  * php-file-iterator
  *
- * Copyright (c) 2009, Sebastian Bergmann <sb@sebastian-bergmann.de>.
+ * Copyright (c) 2009-2010, Sebastian Bergmann <sb@sebastian-bergmann.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,7 +36,7 @@
  *
  * @package   File
  * @author    Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright 2009 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright 2009-2010 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @since     File available since Release 1.1.0
  */
@@ -49,9 +49,9 @@ require_once 'File/Iterator.php';
  * path.
  *
  * @author    Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright 2009 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright 2009-2010 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @version   Release: 1.1.1
+ * @version   Release: 1.2.3
  * @link      http://github.com/sebastianbergmann/php-file-iterator/tree
  * @since     Class available since Release 1.1.0
  */
@@ -62,13 +62,26 @@ class File_Iterator_Factory
      * @param  array|string $suffixes
      * @param  array|string $prefixes
      * @param  array        $exclude
-     * @return File_Iterator
+     * @return AppendIterator
      */
     public static function getFileIterator($paths, $suffixes = '', $prefixes = '', array $exclude = array())
     {
         if (is_string($paths)) {
             $paths = array($paths);
         }
+
+        $_paths = array();
+
+        foreach ($paths as $path) {
+            if ($locals = glob($path, GLOB_ONLYDIR)) {
+                $_paths = array_merge($_paths, $locals);
+            } else {
+                $_paths[] = $path;
+            }
+        }
+
+        $paths = $_paths;
+        unset($_paths);
 
         if (is_string($prefixes)) {
             if ($prefixes != '') {
@@ -86,19 +99,25 @@ class File_Iterator_Factory
             }
         }
 
-        $pathIterator = new AppendIterator;
+        $iterator = new AppendIterator;
 
         foreach ($paths as $path) {
             if (is_dir($path)) {
-                $pathIterator->append(
-                  new RecursiveIteratorIterator(
-                    new RecursiveDirectoryIterator($path)
+                $iterator->append(
+                  new File_Iterator(
+                    new RecursiveIteratorIterator(
+                      new RecursiveDirectoryIterator($path)
+                    ),
+                    $suffixes,
+                    $prefixes,
+                    $exclude,
+                    $path
                   )
                 );
             }
         }
 
-        return new File_Iterator($pathIterator, $suffixes, $prefixes, $exclude);
+        return $iterator;
     }
 
     /**
@@ -110,6 +129,10 @@ class File_Iterator_Factory
      */
     public static function getFilesAsArray($paths, $suffixes = '', $prefixes = '', array $exclude = array())
     {
+        if (is_string($paths)) {
+            $paths = array($paths);
+        }
+
         $result = array();
 
         $iterator = self::getFileIterator(

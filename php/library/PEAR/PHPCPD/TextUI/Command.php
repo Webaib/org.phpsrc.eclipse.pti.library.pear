@@ -59,7 +59,7 @@ function __autoload($className)
  * @author    Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright 2009-2010 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @version   Release: 1.3.0
+ * @version   Release: 1.3.2
  * @link      http://github.com/sebastianbergmann/phpcpd/tree
  * @since     Class available since Release 1.0.0
  */
@@ -204,6 +204,10 @@ class PHPCPD_TextUI_Command
             exit(1);
         }
 
+        if (empty($files)) {
+            self::showError("No files found to scan.\n");
+        }
+
         self::printVersionString();
 
         $detector = new PHPCPD_Detector($verbose);
@@ -219,6 +223,10 @@ class PHPCPD_TextUI_Command
             $pmd = new PHPCPD_Log_XML_PMD($logPmd);
             $pmd->processClones($clones);
             unset($pmd);
+        }
+
+        if (count($clones) > 0) {
+            exit(1);
         }
     }
 
@@ -274,6 +282,20 @@ class PHPCPD_TextUI_Command
     }
 
     /**
+     * Shows an error.
+     *
+     * @param string $message
+     */
+    protected static function showError($message)
+    {
+        self::printVersionString();
+
+        print $message;
+
+        exit(1);
+    }
+
+    /**
      * Shows the help.
      */
     protected static function showHelp()
@@ -304,7 +326,7 @@ EOT;
      */
     protected static function printVersionString()
     {
-        print "phpcpd 1.3.0 by Sebastian Bergmann.\n\n";
+        print "phpcpd 1.3.2 by Sebastian Bergmann.\n\n";
     }
 }
 ?>

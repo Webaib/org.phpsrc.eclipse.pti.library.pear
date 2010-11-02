@@ -41,13 +41,15 @@
  * @since     File available since Release 1.0.0
  */
 
+require_once 'PHP/Timer.php';
+
 /**
  * A ResultPrinter for the TextUI.
  *
  * @author    Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright 2009-2010 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @version   Release: 1.3.0
+ * @version   Release: 1.3.2
  * @link      http://github.com/sebastianbergmann/phpcpd/tree
  * @since     Class available since Release 1.0.0
  */
@@ -100,10 +102,11 @@ class PHPCPD_TextUI_ResultPrinter
         }
 
         printf(
-          "%s%s duplicated lines out of %d total lines of code.\n",
+          "%s%s duplicated lines out of %d total lines of code.\n\n%s\n",
           $numClones > 0 ? "\n" : '',
           $clones->getPercentage(),
-          $clones->getNumLines()
+          $clones->getNumLines(),
+          PHP_Timer::resourceUsage()
         );
     }
 }

@@ -19,8 +19,8 @@
 /**
  * @nodep Gtk
  */
-if ('/srv/pti/pear/svn' != '@'.'include_path'.'@') {
-    ini_set('include_path', '/srv/pti/pear/svn');
+if ('/home/skiera/pti/pear/php' != '@'.'include_path'.'@') {
+    ini_set('include_path', '/home/skiera/pti/pear/php');
     $raw = false;
 } else {
     // this is a raw, uninstalled pear, either a cvs checkout, or php distro

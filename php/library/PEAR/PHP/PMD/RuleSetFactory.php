@@ -60,7 +60,7 @@ require_once 'PHP/PMD/RuleSetNotFoundException.php';
  * @author    Manuel Pichler <mapi@phpmd.org>
  * @copyright 2009-2010 Manuel Pichler. All rights reserved.
  * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @version   Release: 0.2.6
+ * @version   Release: 0.2.7
  * @link      http://phpmd.org
  */
 class PHP_PMD_RuleSetFactory
@@ -71,7 +71,7 @@ class PHP_PMD_RuleSetFactory
      *
      * @var string
      */
-    private $_location = '/srv/pti/pear/svn/data';
+    private $_location = '/home/skiera/pti/pear/php/data';
 
     /**
      * The minimum priority for rules to load.

@@ -2,7 +2,7 @@
 /**
  * php-file-iterator
  *
- * Copyright (c) 2009, Sebastian Bergmann <sb@sebastian-bergmann.de>.
+ * Copyright (c) 2009-2010, Sebastian Bergmann <sb@sebastian-bergmann.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,7 +36,7 @@
  *
  * @package   File
  * @author    Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright 2009 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright 2009-2010 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @since     File available since Release 1.0.0
  */
@@ -46,9 +46,9 @@
  * suffix(es). Hidden files and files from hidden directories are also filtered.
  *
  * @author    Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright 2009 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright 2009-2010 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @version   Release: 1.1.1
+ * @version   Release: 1.2.3
  * @link      http://github.com/sebastianbergmann/php-file-iterator/tree
  * @since     Class available since Release 1.0.0
  */
@@ -73,16 +73,37 @@ class File_Iterator extends FilterIterator
     protected $exclude = array();
 
     /**
+     * @var string
+     */
+    protected $basepath;
+
+    /**
      * @param  Iterator $iterator
      * @param  array    $suffixes
      * @param  array    $prefixes
      * @param  array    $exclude
+     * @param  string   $basepath
      */
-    public function __construct(Iterator $iterator, array $suffixes = array(), array $prefixes = array(), array $exclude = array())
+    public function __construct(Iterator $iterator, array $suffixes = array(), array $prefixes = array(), array $exclude = array(), $basepath = NULL)
     {
+        $exclude = array_map('realpath', $exclude);
+
+        if ($basepath !== NULL) {
+            $basepath = realpath($basepath);
+        }
+
+        if ($basepath === FALSE) {
+            $basepath = NULL;
+        } else {
+            foreach ($exclude as &$_exclude) {
+                $_exclude = str_replace($basepath, '', $_exclude);
+            }
+        }
+
         $this->prefixes = $prefixes;
         $this->suffixes = $suffixes;
-        $this->exclude  = array_map('realpath', $exclude);
+        $this->exclude  = $exclude;
+        $this->basepath = $basepath;
 
         parent::__construct($iterator);
     }
@@ -94,14 +115,18 @@ class File_Iterator extends FilterIterator
     {
         $current  = $this->getInnerIterator()->current();
         $filename = $current->getFilename();
+        $realpath = $current->getRealPath();
+
+        if ($this->basepath !== NULL) {
+            $realpath = str_replace($this->basepath, '', $realpath);
+        }
 
         // Filter files in hidden directories.
-        if (strpos($filename, '.') === 0 ||
-            preg_match('=/\.[^/]*/=', $current->getRealPath())) {
+        if (preg_match('=/\.[^/]*/=', $realpath)) {
             return FALSE;
         }
 
-        return $this->acceptPath($current->getRealPath()) &&
+        return $this->acceptPath($realpath) &&
                $this->acceptPrefix($filename) &&
                $this->acceptSuffix($filename);
     }
