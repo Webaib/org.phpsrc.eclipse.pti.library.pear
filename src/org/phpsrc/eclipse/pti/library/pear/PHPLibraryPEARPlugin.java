@@ -111,8 +111,15 @@ public class PHPLibraryPEARPlugin extends AbstractPHPToolPlugin {
 			}
 		}
 
-		paths.add(resolvePluginResource("/php/library"));
-		paths.add(resolvePluginResource("/php/library/PEAR"));
+		IPath phpLibSuffix = resolvePluginResource("/php/library");
+		if (phpLibSuffix != null) {
+			paths.add(phpLibSuffix);
+		}
+		
+		IPath phpLibPearSuffix = resolvePluginResource("/php/library/PEAR");
+		if (phpLibPearSuffix != null) {
+			paths.add(phpLibPearSuffix);
+		}
 
 		return paths.toArray(new IPath[0]);
 	}
